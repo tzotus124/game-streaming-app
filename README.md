@@ -14,6 +14,34 @@ A complete, production-ready game streaming application supporting remote play a
 ✅ **Web Dashboard** - Monitor and manage streams
 ✅ **Docker Ready** - One-command deployment
 ✅ **Full Documentation** - Setup guides and API docs
+✅ **Standalone EXE** - No installation hassle
+✅ **Professional UI** - Beautiful dark theme
+
+## 📥 Quick Download
+
+### **Download EXE Files - No Build Required!**
+
+👉 **[Download Latest Release](https://github.com/tzotus124/game-streaming-app/releases)**
+
+**Choose one:**
+- `GameStreamingApp-v1.0.0.zip` - All files (250 MB) ⭐ **Recommended**
+- `GameStreamingServer.exe` - Server only (45 MB)
+- `GameStreamingHost-Setup.exe` - Host installer (60 MB)
+- `GameStreamingHost-Portable.exe` - Portable host (180 MB)
+
+👉 **[Full Download Guide](./DOWNLOAD.md)** | **[Installation Instructions](./docs/DOWNLOAD_INSTALL.md)**
+
+## 🚀 First Time Setup (3 Steps)
+
+```bash
+# 1. Download from Releases page
+# 2. Extract files
+# 3. Double-click to run:
+#    - GameStreamingServer.exe (start first)
+#    - GameStreamingHost-Setup.exe or Portable (then run this)
+```
+
+✅ **That's it!** App will launch and you can start streaming.
 
 ## 🏗️ Architecture
 
@@ -39,66 +67,41 @@ A complete, production-ready game streaming application supporting remote play a
 - **Backend:** Node.js, Express, Socket.io
 - **Database:** PostgreSQL
 - **Relay:** Coturn (TURN server)
-- **Infrastructure:** Docker, Docker Compose
+- **Infrastructure:** Docker, Docker Compose, Electron
 - **Monitoring:** Winston Logger, Prometheus
-
-## 🚀 Quick Start
-
-### Prerequisites
-- Docker & Docker Compose
-- Node.js 18+
-- FFmpeg with hardware acceleration support
-- Git
-
-### Development Setup
-
-```bash
-# Clone repository
-git clone https://github.com/tzotus124/game-streaming-app.git
-cd game-streaming-app
-
-# Copy environment variables
-cp .env.example .env
-
-# Start all services
-docker-compose up -d
-
-# Access dashboard
-open http://localhost:3000
-```
-
-### Health Check
-
-```bash
-curl http://localhost:8000/health
-```
 
 ## 📁 Project Structure
 
 ```
 game-streaming-app/
 ├── server/                    # Backend services
-│   ├── src/
-│   │   ├── services/         # Business logic
-│   │   ├── middleware/       # Express middleware
-│   │   └── utils/            # Utilities
-│   ├── package.json
-│   └── Dockerfile
-├── client/                    # Web player
-├── host/                      # Game capture app
-├── dashboard/                 # Management UI
+│   ├── src/                  # TypeScript source
+│   ├── package.json          # Dependencies
+│   └── Dockerfile            # Container image
+├── host/                      # Electron host app
+│   ├── src/                  # React components
+│   ├── main.js               # Electron main process
+│   └── package.json          # Dependencies
+├── scripts/                   # Build scripts
+│   ├── build-release.bat     # Windows build
+│   └── build-release.sh      # macOS/Linux build
 ├── docker/                    # Docker configs
 ├── docs/                      # Documentation
+│   ├── DOWNLOAD_INSTALL.md   # Installation guide
+│   ├── BUILD_EXE.md          # Build instructions
+│   ├── ARCHITECTURE.md       # System design
+│   └── GETTING_STARTED.md    # Quick start
 └── docker-compose.yml        # Local development
 ```
 
 ## 📚 Documentation
 
-- [Getting Started](./docs/GETTING_STARTED.md)
-- [Architecture](./docs/ARCHITECTURE.md)
-- [API Reference](./docs/API.md)
-- [Deployment Guide](./docs/DEPLOYMENT.md)
-- [Troubleshooting](./docs/TROUBLESHOOTING.md)
+- **[📥 Download Guide](./DOWNLOAD.md)** - How to download EXE files
+- **[📖 Installation Guide](./docs/DOWNLOAD_INSTALL.md)** - Step-by-step setup
+- **[🏗️ Architecture](./docs/ARCHITECTURE.md)** - System design overview
+- **[🚀 Getting Started](./docs/GETTING_STARTED.md)** - Quick start guide
+- **[🔨 Build EXE Files](./docs/BUILD_EXE.md)** - Build from source
+- **[📦 GitHub Releases](./docs/RELEASES_SETUP.md)** - Release management
 
 ## 🔒 Security
 
@@ -107,18 +110,49 @@ game-streaming-app/
 - ✅ JWT authentication (signaling)
 - ✅ TLS 1.3 (server communication)
 - ✅ TURN credentials rotation
+- ✅ Secure IPC in Electron
 
 ## 📊 Performance
 
-- **Latency:** 50-150ms (vs 1-5s for RTMP)
+- **Latency:** 50-150ms (WebRTC)
 - **Codec Support:** H.264, VP8, VP9, AV1
 - **GPU Encoding:** NVIDIA NVENC, AMD VCE
 - **Adaptive Bitrate:** 500 Kbps - 20 Mbps
 - **Frame Rate:** Up to 120 FPS
 
+## 💾 System Requirements
+
+### **Server PC**
+- Windows 7 SP1+, macOS, or Linux
+- 2GB RAM minimum
+- 500MB disk space
+- Internet connection
+
+### **Host PC (Gaming PC)**
+- Windows 8+
+- 4GB RAM (8GB recommended)
+- GPU with hardware encoding
+- Good internet connection
+
+### **Client PC**
+- Any OS with modern browser
+- 2GB RAM
+- Stable internet connection
+
+## 🎮 What You Can Do
+
+✅ Stream games from host to multiple clients
+✅ Play games remotely with low latency
+✅ Record gameplay streams
+✅ Share screen with others
+✅ Real-time collaboration
+✅ Live game broadcasting
+✅ Cloud gaming setup
+✅ Remote assistance
+
 ## 🤝 Contributing
 
-Contributions welcome! Please see [CONTRIBUTING.md](./CONTRIBUTING.md)
+Contributions are welcome! Please see [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 ## 📄 License
 
@@ -126,6 +160,25 @@ MIT License - see [LICENSE](./LICENSE)
 
 ## 💬 Support
 
-- 📧 Email: support@gamestreaming.local
-- 🐛 Issues: [GitHub Issues](https://github.com/tzotus124/game-streaming-app/issues)
-- 📖 Wiki: [Project Wiki](https://github.com/tzotus124/game-streaming-app/wiki)
+- **GitHub Issues:** [Report bugs](https://github.com/tzotus124/game-streaming-app/issues)
+- **Discussions:** [Ask questions](https://github.com/tzotus124/game-streaming-app/discussions)
+- **Wiki:** [Knowledge base](https://github.com/tzotus124/game-streaming-app/wiki)
+
+## 🎯 Roadmap
+
+- [ ] Multi-user streaming (one-to-many)
+- [ ] Recording capability
+- [ ] Custom encoder profiles
+- [ ] Kubernetes deployment
+- [ ] Mobile client apps
+- [ ] Advanced analytics
+- [ ] Stream monetization
+- [ ] CDN integration
+
+## ⭐ If You Like This Project
+
+Please consider giving it a star! ⭐ It helps others discover the project.
+
+---
+
+**Ready to stream?** [📥 Download Now](https://github.com/tzotus124/game-streaming-app/releases) 🎮

@@ -1,0 +1,52 @@
+{
+  "name": "game-streaming-host",
+  "version": "1.0.0",
+  "description": "Game Streaming Platform - Host Application",
+  "main": "main.js",
+  "homepage": "./",
+  "build": {
+    "appId": "com.gamestreaming.host",
+    "productName": "Game Streaming Host",
+    "files": [
+      "dist/**/*",
+      "node_modules/**/*",
+      "main.js",
+      "preload.js"
+    ],
+    "win": {
+      "target": [
+        {"target": "nsis", "arch": ["x64"]},
+        {"target": "portable", "arch": ["x64"]}
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "electron": "electron .",
+    "dist": "npm run build && electron-builder build --win --publish never"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "axios": "^1.6.5",
+    "socket.io-client": "^4.7.2",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.6",
+    "@types/react": "^18.2.42",
+    "@types/react-dom": "^18.2.17",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.8",
+    "@vitejs/plugin-react": "^4.2.1",
+    "electron": "^27.0.0",
+    "electron-builder": "^24.6.4"
+  }
+}

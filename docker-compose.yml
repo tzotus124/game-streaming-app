@@ -1,0 +1,101 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: gamestreaming-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: gamestreaming
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./server/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gamestreaming
+
+  redis:
+    image: redis:7-alpine
+    container_name: gamestreaming-cache
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gamestreaming
+
+  signaling:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: gamestreaming-signaling
+    ports:
+      - "8000:8000"
+      - "50000-50100:50000-50100/udp"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/gamestreaming
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=dev-secret-key-change-in-production
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - gamestreaming
+
+  turn:
+    image: coturn/coturn:latest
+    container_name: gamestreaming-turn
+    ports:
+      - "3478:3478/tcp"
+      - "3478:3478/udp"
+      - "5349:5349/tcp"
+      - "5349:5349/udp"
+    volumes:
+      - ./docker/coturn/turnserver.conf:/etc/coturn/turnserver.conf
+    networks:
+      - gamestreaming
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: gamestreaming-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    networks:
+      - gamestreaming
+
+volumes:
+  postgres_data:
+  redis_data:
+  prometheus_data:
+
+networks:
+  gamestreaming:
+    driver: bridge
